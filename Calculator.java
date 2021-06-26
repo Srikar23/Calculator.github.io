@@ -1,24 +1,161 @@
-package frame_;
+//package frame_;
 import java.awt.*;
+
 import java.awt.event.*;
-public class Task extends Frame implements ActionListener
+public class Calculator extends Frame implements ActionListener
 {
-	Panel p,p1,p2;
-	Label l,l1,l2;
-	Button b[];
-	TextField t,t1,t2;
-	String B;
+	Panel input_panel,main_Panel,button_panel;
+	Label result,input_1,input_2;
+	Button buttons[];
+	TextField input_1_textBox,input_2_textBox,result_textBox;
+	String source_button;
 	Boolean a=true;
 	double c;
 	public static void main(String[] arr)
 	{
-		Task t=new Task();
-		t.screen();
+		Calculator temp=new Calculator();
+		temp.screen();
 	}
+	
+	//Activates the calculator screen
+	public void screen() 
+	{
+		setBounds(50,50,500,300);
+		setLayout(new BorderLayout());
+		setVisible(true);
+		
+		
+		main_Panel = new Panel();
+		main_Panel.setBackground(Color.gray);
+		main_Panel.setLayout(new GridLayout(4,3));
+		add(main_Panel,BorderLayout.CENTER);
+		
+		
+		
+		input_panel=new Panel();
+		input_panel.setBounds(10,25,310,65);
+		input_panel.setBackground(Color.blue);
+		input_panel.setLayout(new GridLayout(3,1));
+		main_Panel.add(input_panel);
+		
+		input_1=new Label("INPUT1:");
+		input_panel.add(input_1);
+		input_1_textBox=new TextField(10);
+		input_1_textBox.requestFocus();
+		input_panel.add(input_1_textBox);
+		
+		input_2=new Label("INPUT2:");
+		input_panel.add(input_2);
+		input_2_textBox=new TextField(10);
+		input_panel.add(input_2_textBox);
+		
+		result=new Label("ans:");
+		input_panel.add(result);
+		result_textBox=new TextField(10);
+		result_textBox.setEditable(false);
+		input_panel.add(result_textBox);
+		
+		button_panel=new Panel();
+		button_panel.setBounds(10,90,310,435);
+		button_panel.setLayout(new GridLayout(4,4));
+		main_Panel.add(button_panel);
+		
+		buttons =new Button[20];
+		
+		buttons[0]=new Button("1");
+		buttons[0].addActionListener(this);
+		button_panel.add(buttons[0]);
+		
+		buttons[1]=new Button("2");
+		buttons[1].addActionListener(this);
+		button_panel.add(buttons[1]);
+		
+		buttons[2]=new Button("3");
+		buttons[2].addActionListener(this);
+		button_panel.add(buttons[2]);
+		
+		buttons[3]=new Button("+");
+		buttons[3].addActionListener(this);
+		button_panel.add(buttons[3]);
+		
+		buttons[4]=new Button("-");
+		buttons[4].addActionListener(this);
+		button_panel.add(buttons[4]);
+		
+		buttons[5]=new Button("4");
+		buttons[5].addActionListener(this);
+		button_panel.add(buttons[5]);
+		
+		buttons[6]=new Button("5");
+		buttons[6].addActionListener(this);
+		button_panel.add(buttons[6]);
+				
+		buttons[7]=new Button("6");
+		buttons[7].addActionListener(this);
+		button_panel.add(buttons[7]);
+		
+		buttons[8]=new Button("*");
+		buttons[8].addActionListener(this);
+		button_panel.add(buttons[8]);
+		
+		buttons[9]=new Button("%");
+		buttons[9].addActionListener(this);
+		button_panel.add(buttons[9]);
+		
+		buttons[10]=new Button("7");
+		buttons[10].addActionListener(this);
+		button_panel.add(buttons[10]);
+		
+		buttons[11]=new Button("8");
+		buttons[11].addActionListener(this);
+		button_panel.add(buttons[11]);
+		
+		buttons[12]=new Button("9");
+		buttons[12].addActionListener(this);
+		button_panel.add(buttons[12]);
+		
+		buttons[13]=new Button("/");
+		buttons[13].addActionListener(this);
+		button_panel.add(buttons[13]);
+		
+		buttons[14]=new Button("pow");
+		buttons[14].addActionListener(this);
+		button_panel.add(buttons[14]);
+		
+		buttons[15]=new Button("Reset");
+		buttons[15].addActionListener(this);
+		button_panel.add(buttons[15]);
+		
+		buttons[16]=new Button("0");
+		buttons[16].addActionListener(this);
+		button_panel.add(buttons[16]);
+		
+		buttons[17]=new Button(".");
+		buttons[17].addActionListener(this);
+		button_panel.add(buttons[17]);
+		
+		buttons[18]=new Button("DEL");
+		buttons[18].addActionListener(this);
+		button_panel.add(buttons[18]);
+		
+		buttons[19]=new Button("ENTER");
+		buttons[19].addActionListener(this);
+		button_panel.add(buttons[19]);
+		
+		WindowListener Wd=new WindowAdapter(){
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		};
+		
+		addWindowListener(Wd);
+			
+	}
+	
 	public void actionPerformed(ActionEvent e)
 	{
-		B=((Button)e.getSource()).getLabel();
-		switch(B)
+		source_button=((Button)e.getSource()).getLabel();
+		switch(source_button)
 		{
 			case "1":
 			case "2":
@@ -32,180 +169,91 @@ public class Task extends Frame implements ActionListener
 			case "0":
 			case ".":
 				if(a==true)
-					t.setText(t.getText()+B);
+					input_1_textBox.setText(input_1_textBox.getText()+source_button);
 				else
-					t1.setText(t1.getText()+B);
+					input_2_textBox.setText(input_2_textBox.getText()+source_button);
 				break;
 			case "ENTER":
 					a=!a;
+					if(a==true)
+						input_1_textBox.requestFocus();
+					else
+						input_2_textBox.requestFocus();
 				break;
 			case "Reset":
-				t.setText("");
-				t1.setText("");
-				t2.setText("");
+				input_1_textBox.setText("");
+				input_2_textBox.setText("");
+				result_textBox.setText("");
 				a=true;
+				input_1_textBox.requestFocus();
 				break;
 			case "+":
-				c=Double.parseDouble(t.getText())+Double.parseDouble(t1.getText());
-				t2.setText(Double.toString(c));
+				try {
+					c=Double.parseDouble(input_1_textBox.getText())+Double.parseDouble(input_2_textBox.getText());
+					result_textBox.setText(Double.toString(c));
+				}
+				catch(Exception exc)
+				{
+					result_textBox.setText("NULL");
+				}
 				break;
 			case "-":
-				c=Double.parseDouble(t.getText())-Double.parseDouble(t1.getText());
-				t2.setText(Double.toString(c));
+				try {
+					c=Double.parseDouble(input_1_textBox.getText())-Double.parseDouble(input_2_textBox.getText());
+					result_textBox.setText(Double.toString(c));
+				}
+				catch(Exception exc)
+				{
+					result_textBox.setText("NULL");
+				}
 				break;		
 			case "*":
-					c=Double.parseDouble(t.getText())*Double.parseDouble(t1.getText());
-					t2.setText(Double.toString(c));
+				try {
+					c=Double.parseDouble(input_1_textBox.getText())*Double.parseDouble(input_2_textBox.getText());
+					result_textBox.setText(Double.toString(c));
+				}
+				catch(Exception exc)
+				{
+					result_textBox.setText("NULL");
+				}
 					break;
 			case "/":
-				int d=(int)(Double.parseDouble(t.getText())/Double.parseDouble(t1.getText()));
-				t2.setText(Integer.toString(d));
+				try {
+					int ress=(int)(Double.parseDouble(input_1_textBox.getText())/Double.parseDouble(input_2_textBox.getText()));
+					result_textBox.setText(Integer.toString(ress));
+				}
+				catch(Exception exc)
+				{
+					result_textBox.setText("NULL");
+				}
 				break;
 			case "pow":
-				c=Math.pow(Double.parseDouble(t.getText()),Double.parseDouble(t1.getText()));
-				t2.setText(Double.toString(c));
+				try {
+					c=Math.pow(Double.parseDouble(input_1_textBox.getText()),Double.parseDouble(input_2_textBox.getText()));
+					result_textBox.setText(Double.toString(c));
+				}
+				catch(Exception exc)
+				{
+					result_textBox.setText("NULL");
+				}
 				break;
 			case "%":
-				c=Double.parseDouble(t.getText())%Double.parseDouble(t1.getText());
-				t2.setText(Double.toString(c));
+				try {
+					c=Double.parseDouble(input_1_textBox.getText())%Double.parseDouble(input_2_textBox.getText());
+					result_textBox.setText(Double.toString(c));
+				}
+				catch(Exception exc)
+				{
+					result_textBox.setText("NULL");
+				}
 				break;
-			case "<=":
+			case "DEL":
 				if(a==true)
-					t.setText(t.getText().substring(0,t.getText().length()-1));
+					input_1_textBox.setText(input_1_textBox.getText().substring(0,input_1_textBox.getText().length()-1));
 				else
-					t1.setText(t1.getText().substring(0,t1.getText().length()-1));
-				
+					input_2_textBox.setText(input_2_textBox.getText().substring(0,input_2_textBox.getText().length()-1));
 				
 		}
 		
-	}
-	public void screen() 
-	{
-		setBounds(50,50,300,400);
-		setLayout(new BorderLayout());
-		setVisible(true);
-		
-		
-		p2=new Panel();
-		p2.setBackground(Color.gray);
-		add(p2,BorderLayout.CENTER);
-		
-		
-		p=new Panel();
-		p.setBounds(10,25,310,65);
-		p.setBackground(Color.blue);
-		p.setLayout(new GridLayout(3,1));
-		p2.add(p);
-		
-		l=new Label("p:");
-		p.add(l);
-		t=new TextField(10);
-		p.add(t);
-		
-		l1=new Label("q:");
-		p.add(l1);
-		t1=new TextField(10);
-		p.add(t1);
-		
-		l2=new Label("ans:");
-		p.add(l2);
-		t2=new TextField(10);
-		t2.setEditable(false);
-		p.add(t2);
-		
-		p1=new Panel();
-		p1.setBounds(10,90,310,435);
-		p1.setLayout(new GridLayout(4,4));
-		p2.add(p1);
-		
-		b=new Button[20];
-		
-		b[0]=new Button("1");
-		b[0].addActionListener(this);
-		p1.add(b[0]);
-		
-		b[1]=new Button("2");
-		b[1].addActionListener(this);
-		p1.add(b[1]);
-		
-		b[2]=new Button("3");
-		b[2].addActionListener(this);
-		p1.add(b[2]);
-		
-		b[3]=new Button("+");
-		b[3].addActionListener(this);
-		p1.add(b[3]);
-		
-		b[4]=new Button("-");
-		b[4].addActionListener(this);
-		p1.add(b[4]);
-		
-		b[5]=new Button("4");
-		b[5].addActionListener(this);
-		p1.add(b[5]);
-		
-		b[6]=new Button("5");
-		b[6].addActionListener(this);
-		p1.add(b[6]);
-				
-		b[7]=new Button("6");
-		b[7].addActionListener(this);
-		p1.add(b[7]);
-		
-		b[8]=new Button("*");
-		b[8].addActionListener(this);
-		p1.add(b[8]);
-		
-		b[9]=new Button("%");
-		b[9].addActionListener(this);
-		p1.add(b[9]);
-		
-		b[10]=new Button("7");
-		b[10].addActionListener(this);
-		p1.add(b[10]);
-		
-		b[11]=new Button("8");
-		b[11].addActionListener(this);
-		p1.add(b[11]);
-		
-		b[12]=new Button("9");
-		b[12].addActionListener(this);
-		p1.add(b[12]);
-		
-		b[13]=new Button("/");
-		b[13].addActionListener(this);
-		p1.add(b[13]);
-		
-		b[14]=new Button("pow");
-		b[14].addActionListener(this);
-		p1.add(b[14]);
-		
-		b[15]=new Button("Reset");
-		b[15].addActionListener(this);
-		p1.add(b[15]);
-		
-		b[16]=new Button("0");
-		b[16].addActionListener(this);
-		p1.add(b[16]);
-		
-		b[17]=new Button(".");
-		b[17].addActionListener(this);
-		p1.add(b[17]);
-		
-		b[18]=new Button("<=");
-		b[18].addActionListener(this);
-		p1.add(b[18]);
-		
-		b[19]=new Button("ENTER");
-		b[19].addActionListener(this);
-		p1.add(b[19]);
-		
-		WindowListener Wd=new WindowAdapter(){
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		};
-		addWindowListener(Wd);
-			
 	}
 }
